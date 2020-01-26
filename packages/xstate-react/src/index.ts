@@ -12,6 +12,7 @@ import {
 } from 'xstate';
 import { useSubscription, Subscription } from 'use-subscription';
 import useConstant from './useConstant';
+import { DIFFERENT_MACHINE_ERROR_MESSAGE } from './utils';
 
 interface UseMachineOptions<TContext, TEvent extends EventObject> {
   /**
@@ -43,10 +44,7 @@ export function useMachine<
     const [initialMachine] = useState(machine);
 
     if (machine !== initialMachine) {
-      throw new Error(
-        'Machine given to `useMachine` has changed between renders. This is not supported and might lead to unexpected results.\n' +
-          "Please make sure that you pass the same Machine as argument each time. Keep also that in mind that `useMemo` can't be used for this kind of caching as per https://reactjs.org/docs/hooks-reference.html#usememo"
-      );
+      throw new Error(DIFFERENT_MACHINE_ERROR_MESSAGE);
     }
   }
 
